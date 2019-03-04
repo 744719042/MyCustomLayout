@@ -1,6 +1,11 @@
 package com.example.mycustomwidget.widget;
 
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
+
 public interface ILayoutManager {
-    void onMeasure(AbNormalLayout layout, int widthMeasure, int heightMeasure);
-    void onLayout(AbNormalLayout layout, boolean changed, int left, int top, int right, int bottom);
+    int onMeasure(int width, Context context, AttributeSet attrs);
+    void onLayout(AbNormalLayout layout, int cellPadding);
+    void measureChildView(AbNormalLayout parent, View view, int cellPadding);
 }

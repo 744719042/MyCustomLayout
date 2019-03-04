@@ -7,13 +7,15 @@ import android.view.View;
 
 import com.example.mycustomwidget.R;
 
-public class FourCellLayoutManager extends BaseLayoutManager {
+public class FiveCellLayoutManager extends BaseLayoutManager {
     @Override
     public int onMeasure(int width, Context context, AttributeSet attrs) {
         if (attrs != null) {
             TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AbNormalLayout);
-            mAspect = array.getFloat(R.styleable.AbNormalLayout_fourCardsAspect, mAspect);
+            mAspect = array.getFloat(R.styleable.AbNormalLayout_fiveCardsAspect, mAspect);
             array.recycle();
+        } else {
+
         }
         return (int) (width * mAspect);
     }
@@ -38,6 +40,10 @@ public class FourCellLayoutManager extends BaseLayoutManager {
         x = x - view.getMeasuredWidth() - cellPadding;
         y = y + view.getMeasuredHeight() + cellPadding;
         view = layout.getChildAt(3);
+        view.layout(x, y, x + view.getMeasuredWidth(), y + view.getMeasuredHeight());
+
+        x = x + view.getMeasuredWidth() + cellPadding;
+        view = layout.getChildAt(4);
         view.layout(x, y, x + view.getMeasuredWidth(), y + view.getMeasuredHeight());
     }
 
