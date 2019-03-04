@@ -10,6 +10,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.mycustomwidget.R;
@@ -17,6 +19,7 @@ import com.example.mycustomwidget.utils.NumUtils;
 import com.example.mycustomwidget.utils.UIUtils;
 
 public class RatingBar extends View {
+    private static final String TAG = "RatingBar";
     private Bitmap mEmptyBitmap;
     private Bitmap mFullBitmap;
     private static final int DEFAULT_MAX_VALUE = 10;
@@ -28,6 +31,8 @@ public class RatingBar extends View {
     private Rect mRect;
     private Rect mLeftRect;
     private Rect mRightRect;
+
+    private Rect mTmpRect;
     private int mStarPadding = DEFAULT_CELL_PADDING;
 
     private Paint mPaint;
@@ -75,6 +80,7 @@ public class RatingBar extends View {
         mRect = new Rect();
         mLeftRect = new Rect();
         mRightRect = new Rect();
+        mTmpRect = new Rect();
     }
 
     public void setMaxValue(int maxValue) {
@@ -94,6 +100,8 @@ public class RatingBar extends View {
         if (value > mMaxValue) {
             mValue = mMaxValue;
         }
+        mValue = value;
+        Log.e(TAG, "value = " + mValue);
         invalidate();
     }
 
@@ -163,6 +171,39 @@ public class RatingBar extends View {
                 left = i * (drawableWidth + mStarPadding);
                 mRect.set(left, top, left + drawableWidth, top + drawableHeight);
                 canvas.drawBitmap(mEmptyBitmap, null, mRect, mPaint);
+            }
+        }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+        Log.e(TAG, "x = " + x + ", y = " + y);
+        changeValue(x, y);
+        return super.dispatchTouchEvent(event);
+    }
+
+    private void changeValue(int x, int y) {
+        mTmpRect.set(0, 0, getWidth(), getHeight());
+        int height = getMeasuredHeight();
+        int drawableHeight = (int) (height * (1 - 2 * PADDING_PERCENT));
+        int drawableWidth = drawableHeight;
+        int left = 0;
+        Log.e(TAG, "total rect = " + mTmpRect.flattenToString());
+        if (mTmpRect.contains(x, y)) {
+            for (int i = 0; i < 5; i++) {
+                left = (drawableWidth + mStarPadding) * i;
+                mTmpRect.set(left, 0, left + drawableWidth, height);
+                Log.e(TAG, "current rect = " + mTmpRect.flattenToString());
+                if (mTmpRect.contains(x, y)) {
+                    float point = 1.0f * (x - left) / drawableWidth;
+                    Log.e(TAG, "point = " + point);
+                    float value = (i + point) / 5 * mMaxValue;
+                    Log.e(TAG, "value = " + value);
+                    setValue(value);
+                    break;
+                }
             }
         }
     }
