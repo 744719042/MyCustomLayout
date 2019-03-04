@@ -13,4 +13,12 @@
         <attr name="heightRatio" format="float" />
         <attr name="aspect" format="float" />
     </declare-styleable>
+
+    <declare-styleable name="RatingBar">
+        <attr name="emptyImage" format="reference" />
+        <attr name="fullImage" format="reference" />
+        <attr name="maxValue" format="integer" />
+        <attr name="value" format="float" />
+        <attr name="starPadding" format="dimension" />
+    </declare-styleable>
 </resources>
