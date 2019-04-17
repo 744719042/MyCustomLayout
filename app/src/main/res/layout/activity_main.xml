@@ -13,4 +13,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:onClick="showRatingBar"
+        android:text="展示评论控件"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:onClick="hideRatingBar"
+        android:text="隐藏评论控件"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:onClick="moveRatingBar"
+        android:text="移动评论控件"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
